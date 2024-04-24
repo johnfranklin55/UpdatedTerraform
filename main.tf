@@ -16,34 +16,29 @@ provider "azurerm" {
     }
 }
 
-locals {
-  resource_group= "john-franklin"
-  location = "East US"
+data "azurerm_resource_group" "john-franklin" {
+  name = "john-franklin"
 }
 
-resource "azurerm_resource_group" "john-franklin" {
-  name     = "john-franklin"
-  location = "East US"
-}
 
 resource "azurerm_virtual_network" "john-franklin-vnet" {
   name                = "john-franklin-vnet"
   address_space       = ["10.0.0.0/16"]
-  location            = local.location
-  resource_group_name = local.resource_group
+  location            = data.azurerm_resource_group.john-franklin.location
+  resource_group_name = data.azurerm_resource_group.john-franklin.name
 }
 
 resource "azurerm_subnet" "subnetA" {
   name                 = "subnetA"
-  resource_group_name  = local.resource_group
+  resource_group_name  = data.azurerm_resource_group.john-franklin.name
   virtual_network_name = azurerm_virtual_network.john-franklin-vnet.name
   address_prefixes     = ["10.0.0.0/20"]
 }
 
 resource "azurerm_network_interface" "john-franklin-nic" {
   name                = "john-franklin-nic"
-  location            = local.location
-  resource_group_name = local.resource_group
+  location            = data.azurerm_resource_group.john-franklin.location
+  resource_group_name = data.azurerm_resource_group.john-franklin.name
 
   ip_configuration {
     name                          = "internal"
@@ -54,8 +49,8 @@ resource "azurerm_network_interface" "john-franklin-nic" {
 
 resource "azurerm_windows_virtual_machine" "john-franklinVM" {
   name                = "john-franklinVM"
-  resource_group_name = local.resource_group
-  location            = local.location
+  resource_group_name = data.azurerm_resource_group.john-franklin.name
+  location            = data.azurerm_resource_group.john-franklin.location
   size                = "Standard_F2"
   admin_username      = "johnfrank"
   admin_password      = "Oghenerunor@55"
