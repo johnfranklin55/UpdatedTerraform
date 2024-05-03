@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = "3.99.0"
-    }
-  }
-}
-
 provider "azurerm" {
   skip_provider_registration = "true"
     features {
@@ -22,21 +13,21 @@ data "azurerm_resource_group" "john-franklin" {
 
 
 resource "azurerm_virtual_network" "john-franklin-vnet" {
-  name                = "john-franklin-vnet"
-  address_space       = ["10.0.0.0/16"]
+  name                = var.azurerm_virtual_network
+  address_space       = var.address_space
   location            = data.azurerm_resource_group.john-franklin.location
   resource_group_name = data.azurerm_resource_group.john-franklin.name
 }
 
 resource "azurerm_subnet" "subnetA" {
-  name                 = "subnetA"
+  name                 = var.azurerm_subnet
   resource_group_name  = data.azurerm_resource_group.john-franklin.name
   virtual_network_name = azurerm_virtual_network.john-franklin-vnet.name
-  address_prefixes     = ["10.0.0.0/20"]
+  address_prefixes     = var.address_prefixes
 }
 
 resource "azurerm_network_interface" "john-franklin-nic" {
-  name                = "john-franklin-nic"
+  name                = var.azurerm_network_interface
   location            = data.azurerm_resource_group.john-franklin.location
   resource_group_name = data.azurerm_resource_group.john-franklin.name
 
@@ -48,12 +39,12 @@ resource "azurerm_network_interface" "john-franklin-nic" {
 }
 
 resource "azurerm_windows_virtual_machine" "john-franklinVM" {
-  name                = "john-franklinVM"
+  name                = var.azurerm_windows_virtual_machine
   resource_group_name = data.azurerm_resource_group.john-franklin.name
   location            = data.azurerm_resource_group.john-franklin.location
   size                = "Standard_F2"
-  admin_username      = "johnfrank"
-  admin_password      = "Oghenerunor@55"
+  admin_username      = var.admin_username
+  admin_password      = var.admin_password
   network_interface_ids = [
     azurerm_network_interface.john-franklin-nic.id,
   ]
