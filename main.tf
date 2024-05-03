@@ -22,7 +22,7 @@ resource "azurerm_virtual_network" "john-franklin-vnet" {
 resource "azurerm_subnet" "subnetA" {
   name                 = var.azurerm_subnet
   resource_group_name  = data.azurerm_resource_group.john-franklin.name
-  virtual_network_name = azurerm_virtual_network.john-franklin-vnet.name
+  virtual_network_name = var.azurerm_virtual_network
   address_prefixes     = var.address_prefixes
 }
 
