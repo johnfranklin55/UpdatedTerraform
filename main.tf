@@ -11,6 +11,22 @@ data "azurerm_resource_group" "john-franklin" {
   name = "john-franklin"
 }
 
+resource "azurerm_service_plan" "MyAppPlan" {
+  name                = var.azurerm_service_plan
+  resource_group_name = data.azurerm_resource_group.john-franklin.name
+  location            = data.azurerm_resource_group.john-franklin.location
+  sku_name            = "P1v2"
+  os_type             = "Windows"
+}
+
+resource "azurerm_windows_web_app" "jayFapp" {
+  name                = var.azurerm_windows_web_app
+  resource_group_name = data.azurerm_resource_group.john-franklin.name
+  location            = data.azurerm_resource_group.john-franklin.location
+  service_plan_id     = azurerm_service_plan.MyAppPlan.id
+
+  site_config {}
+}
 
 resource "azurerm_virtual_network" "john-franklin-vnet" {
   name                = var.azurerm_virtual_network

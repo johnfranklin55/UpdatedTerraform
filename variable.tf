@@ -1,3 +1,17 @@
+variable "azurerm_service_plan" {
+  type = string
+  default = "MyAppPlan"
+  description = "name of the service plan"
+  
+}
+
+variable "azurerm_windows_web_app" {
+  type = string
+  default = "jayFapp"
+  description = "name of the web app"
+  
+}
+
 variable "azurerm_virtual_network" {
   type = string
   default = "john-franklin-vnet"
