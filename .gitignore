@@ -3,4 +3,4 @@
 terraform.tfstate
 terraform.tfstate.backup
 terraform.tfstate.1713973973.backup
-johnfranklin.auto.tfvars
+*.tfvars
